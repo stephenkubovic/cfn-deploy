@@ -2,6 +2,12 @@
 
 A thin wrapper around the [`aws cloudformation deploy`][aws-cloudformation-deploy] command that provides realtime CloudFormation stack event updates while the command is running.
 
+## Installation
+
+```
+go get github.com/stephenkubovic/cfn-deploy/cmd/cfn-deploy
+```
+
 ## Usage
 
 ```
