@@ -179,16 +179,16 @@ func writeStackEvent(e stackevents.Event, w io.Writer) {
 		status = color.New(color.FgYellow).Sprint(status)
 	}
 
-	out := fmt.Sprintf(
-		"%s | %s | %s | %s | %s\n",
-		e.Timestamp.String(),
-		e.LogicalResourceID,
-		status,
-		e.ResourceStatusReason,
-		e.PhysicalResourceID,
-	)
+	id := color.New(color.FgHiBlue).Sprint(e.LogicalResourceID)
 
-	w.Write([]byte(out))
+	var b strings.Builder
+	b.WriteString(fmt.Sprintf("%s - %s", id, status))
+	if e.ResourceStatusReason != "" {
+		b.WriteString(fmt.Sprintf(" (%s)", e.ResourceStatusReason))
+	}
+	b.WriteString(fmt.Sprintf("\n%s\n", e.PhysicalResourceID))
+	b.WriteString(fmt.Sprintf("%s\n\n", e.Timestamp.Format("15:04:05")))
+	w.Write([]byte(b.String()))
 }
 
 // CreateDeployCommand creates the CloudFormation stack deployment command.
