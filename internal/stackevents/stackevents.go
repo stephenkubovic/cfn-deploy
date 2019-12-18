@@ -56,3 +56,15 @@ func Read(cfn cloudformationClient, t time.Time, stack string) ([]Event, error) 
 
 	return events, nil
 }
+
+func (e *Event) IsOk() bool {
+	return StatusType(e.ResourceStatus) == Ok
+}
+
+func (e *Event) IsFailure() bool {
+	return StatusType(e.ResourceStatus) == Fail
+}
+
+func (e *Event) IsProgress() bool {
+	return StatusType(e.ResourceStatus) == Progress
+}

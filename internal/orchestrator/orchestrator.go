@@ -12,6 +12,7 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudformation"
+	"github.com/fatih/color"
 	"github.com/stephenkubovic/cfn-deploy/internal/deploy"
 	"github.com/stephenkubovic/cfn-deploy/internal/stackevents"
 )
@@ -169,14 +170,24 @@ func (c *Command) stderrHandler(r io.Reader, done chan<- bool) {
 }
 
 func writeStackEvent(e stackevents.Event, w io.Writer) {
+	var status string = e.ResourceStatus
+	if e.IsOk() {
+		status = color.New(color.FgGreen).Sprint(status)
+	} else if e.IsFailure() {
+		status = color.New(color.FgRed).Sprint(status)
+	} else if e.IsProgress() {
+		status = color.New(color.FgYellow).Sprint(status)
+	}
+
 	out := fmt.Sprintf(
 		"%s | %s | %s | %s | %s\n",
 		e.Timestamp.String(),
 		e.LogicalResourceID,
-		e.ResourceStatus,
+		status,
 		e.ResourceStatusReason,
 		e.PhysicalResourceID,
 	)
+
 	w.Write([]byte(out))
 }
 
