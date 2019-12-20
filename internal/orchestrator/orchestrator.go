@@ -186,7 +186,6 @@ func writeStackEvent(e stackevents.Event, w io.Writer) {
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("%s %s %s %s", t, id, e.PhysicalResourceID, status))
 	b.WriteString("\n")
-	// b.WriteString(fmt.Sprintf("%s %s", pad, status))
 	if e.ResourceStatusReason != "" {
 		b.WriteString(fmt.Sprintf("%s %s\n", pad, color.New(color.Italic).Sprint(e.ResourceStatusReason)))
 	}
