@@ -24,6 +24,7 @@ var statusMap map[string]int = map[string]int{
 	"UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS": Progress,
 	"UPDATE_ROLLBACK_FAILED":                       Fail,
 	"UPDATE_ROLLBACK_IN_PROGRESS":                  Progress,
+	"UPDATE_FAILED":                                Fail,
 	"IMPORT_IN_PROGRESS":                           Progress,
 	"IMPORT_COMPLETE":                              Ok,
 	"IMPORT_ROLLBACK_IN_PROGRESS":                  Progress,

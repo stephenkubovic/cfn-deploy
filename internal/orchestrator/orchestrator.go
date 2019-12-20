@@ -176,18 +176,21 @@ func writeStackEvent(e stackevents.Event, w io.Writer) {
 	} else if e.IsFailure() {
 		status = color.New(color.FgRed).Sprint(status)
 	} else if e.IsProgress() {
-		status = color.New(color.FgYellow).Sprint(status)
+		status = color.New(color.FgBlue).Sprint(status)
 	}
 
-	id := color.New(color.FgHiBlue).Sprint(e.LogicalResourceID)
+	id := color.New(color.Underline).Sprint(e.LogicalResourceID)
+	t := color.New(color.Faint).Sprint(e.Timestamp.Format("15:04:05"))
+	pad := strings.Repeat(" ", 8)
 
 	var b strings.Builder
-	b.WriteString(fmt.Sprintf("%s - %s", id, status))
+	b.WriteString(fmt.Sprintf("%s %s %s %s", t, id, e.PhysicalResourceID, status))
+	b.WriteString("\n")
+	// b.WriteString(fmt.Sprintf("%s %s", pad, status))
 	if e.ResourceStatusReason != "" {
-		b.WriteString(fmt.Sprintf(" (%s)", e.ResourceStatusReason))
+		b.WriteString(fmt.Sprintf("%s %s\n", pad, color.New(color.Italic).Sprint(e.ResourceStatusReason)))
 	}
-	b.WriteString(fmt.Sprintf("\n%s\n", e.PhysicalResourceID))
-	b.WriteString(fmt.Sprintf("%s\n\n", e.Timestamp.Format("15:04:05")))
+	b.WriteString("\n")
 	w.Write([]byte(b.String()))
 }
 
